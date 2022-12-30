@@ -39,7 +39,7 @@ class MainProc:
         self.mouse_object = Mouse.Cursor()
         # endregion
         # region Window Setup
-        pygame.display.set_icon(pygame.image.load(Path.fix_path("./Images/Icon Resources/exe_icon.ico")))
+        pygame.display.set_icon(pygame.image.load(Path.fix_path("./Images/Icon Resources/16x16.bmp")))
         pygame.display.set_caption("You Are An Idiot")
         self.window = pygame.display.set_mode(self.current_res, pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
