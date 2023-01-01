@@ -1,8 +1,6 @@
 from typing import *
 from operator import itemgetter
 import pygame
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
 TRANSPARENT = (1, 1, 1)
 
 
@@ -12,7 +10,9 @@ class Text(pygame.sprite.Sprite):
                  font_object: pygame.font.Font,
                  padding: Tuple[Union[int, float], Union[int, float]]):
         super().__init__()
-        self.prev_invert = False
+        # prev_invert is set to the opposite of the starting value of 'Background.Color' to make sure 'render_text()'
+        # will be called the first time 'update()' is called.
+        self.prev_invert = True
         self.text_lines = text_lines
         self.font = font_object
         self.x, self.y = 0, 0
@@ -28,8 +28,7 @@ class Text(pygame.sprite.Sprite):
         self.original_surf = pygame.Surface((self.text_width, self.text_height))
         # This surface will be rendered more often than it is modified, so use the accelerated blit flag.
         self.original_surf.set_colorkey(TRANSPARENT, pygame.RLEACCEL)
-        self.render_text(WHITE)
-        self.image = self.original_surf.copy()
+        self.image = None  # Not needed since 'render_text()' is guaranteed to be called on the first frame of the game.
         self.rect = pygame.Rect(self.x, self.y, self.text_width, self.text_height)
 
     def render_text(self, color: Tuple[int, int, int]) -> None:
@@ -70,7 +69,7 @@ class Text(pygame.sprite.Sprite):
     def update(self, area_size: Tuple[int, int], invert: bool) -> None:
         if self.prev_invert is not invert:
             self.prev_invert = invert
-            self.render_text(BLACK if invert else WHITE)
+            self.render_text((255 * (not invert),) * 3)  # Text should be the opposite color of the background.
         self.resize_surf(area_size)  # Updates surface
         self.update_pos(area_size)  # Updates position
 
