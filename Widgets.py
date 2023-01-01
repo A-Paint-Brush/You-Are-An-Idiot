@@ -9,6 +9,7 @@ class Button(pygame.sprite.Sprite):
                  icons: Tuple[pygame.Surface, ...],
                  callback: Callable[[], None]):
         super().__init__()
+        self.released = True  # This flag will ensure the button only runs its callback once per mouse-click.
         self.x, self.y = 0, 0
         self.icons = (icons[0:2], icons[2:])  # (not full-screen: (normal, hovered), full-screen: (normal, hovered))
         self.image = self.icons[0][0]
@@ -30,8 +31,12 @@ class Button(pygame.sprite.Sprite):
     def mouse_collide(self, mouse_obj: Mouse.Cursor, full_screen: bool) -> None:
         colliding = bool(pygame.sprite.collide_rect(self, mouse_obj))
         self.update_icon(colliding, full_screen)
-        if colliding and mouse_obj.get_button_state(1):
-            self.callback_func()
+        if mouse_obj.get_button_state(1):
+            if colliding and self.released:
+                self.released = False
+                self.callback_func()
+        else:
+            self.released = True
 
     def update(self,
                mouse_obj: Mouse.Cursor,
