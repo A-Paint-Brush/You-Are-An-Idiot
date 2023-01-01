@@ -9,7 +9,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[(".\\Fonts\\*.ttf", ".\\Fonts"),
-           (".\\Images\\Icon Resources\\*.*", ".\\Images\\Icon Resources"),
+           (".\\Images\\Icon Resources\\16x16.bmp", ".\\Images\\Icon Resources"),
            (".\\Images\\UI Assets\\*.bmp", ".\\Images\\UI Assets")],
     hiddenimports=[],
     hookspath=[],
